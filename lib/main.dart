@@ -2,7 +2,9 @@ import 'package:emergency_one/core/themes/themes.dart';
 import 'package:emergency_one/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'features/auth/view/auth_view.dart.dart';
+import 'features/splace/view/splace_view.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -15,13 +17,13 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
       title: 'Emergency One',
       theme: lightTheme,
       themeMode: ThemeMode.light,
       darkTheme: lightTheme,
       debugShowCheckedModeBanner: false,
-      home: AuthViewDart(),
+      home: SplaceView(), // Replace with your desired initial view
     );
   }
 }
