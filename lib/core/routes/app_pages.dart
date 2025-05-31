@@ -1,4 +1,5 @@
 import 'package:emergency_one/features/auth/view/login_view.dart';
+import 'package:emergency_one/features/auth/view/profile_setup_view.dart';
 import 'package:emergency_one/features/auth/view/register_view.dart';
 import 'package:get/get.dart';
 
@@ -18,6 +19,10 @@ var pageRoutes = [
   GetPage(
       name: registerView,
       page: () => RegisterView(),
+  ),
+  GetPage(
+      name: profileSetupView,
+      page: () => ProfileSetupView(),
   ),
 
 ];

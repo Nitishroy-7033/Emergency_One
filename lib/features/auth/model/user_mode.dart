@@ -43,6 +43,7 @@ class UserModel {
   final String? bloodGroup;
   final HealthInfo? healthInfo;
   final List<RecentRequest>? recentRequests;
+  final String? address;
   final String? languagePreference;
 
   UserModel({
@@ -61,6 +62,7 @@ class UserModel {
     this.healthInfo,
     this.recentRequests = const [],
     this.languagePreference,
+    this.address,
   });
 
   factory UserModel.fromJson(Map<String, dynamic> json, [String? docId]) {
@@ -69,6 +71,7 @@ class UserModel {
       name: json['name'],
       email: json['email'],
       phone: json['phone'],
+      address: json['address'],
       passwordHash: json['passwordHash'],
       role: json['role'],
       coordinates: List<double>.from(json['location']['coordinates']),
@@ -95,6 +98,7 @@ class UserModel {
         'name': name,
         'email': email,
         'phone': phone,
+        'address': address,
         'passwordHash': passwordHash,
         'role': role,
         'location': {

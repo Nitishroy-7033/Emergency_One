@@ -1,19 +1,19 @@
 import 'package:emergency_one/core/components/primary_button.dart';
 import 'package:emergency_one/core/constants/app_const.dart';
+import 'package:emergency_one/core/routes/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../../core/routes/app_routes.dart';
 import '../view_models/auth_view_model.dart';
 
-class RegisterView extends StatelessWidget {
-  const RegisterView({super.key});
+class ProfileSetupView extends StatelessWidget {
+  const ProfileSetupView({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final TextEditingController emailController = TextEditingController();
-    final TextEditingController nameController = TextEditingController();
-    final TextEditingController passwordController = TextEditingController();
+    final TextEditingController bloodGroupController = TextEditingController();
+    final TextEditingController contactNumber = TextEditingController();
+    final TextEditingController locationController = TextEditingController();
 
     final authVM = Get.put(AuthViewModel());
     final isLoading = false.obs;
@@ -21,25 +21,24 @@ class RegisterView extends StatelessWidget {
 
     void handleRegister() async {
       isLoading.value = true;
-      final error = await authVM.register(
-        emailController.text.trim(),
-        passwordController.text,
-        nameController.text.trim(),
+      final error = await authVM.updateUserData(
+       address: locationController.text,  
+       bloodGroup: bloodGroupController.text,
+       phone: contactNumber.text,
       );
       isLoading.value = false;
       if (error != null) {
         errorMessage.value = error;
-        Get.snackbar("Register Failed", error, snackPosition: SnackPosition.BOTTOM);
+        Get.snackbar("Profile Update erro", error, snackPosition: SnackPosition.BOTTOM);
       } else {
-        // Get.back(); // Go back to Login screen
-        Get.toNamed(profileSetupView);
+        Get.offAllNamed(loginView);
       }
     }
 
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.primary,
-        title: const Text("Auth Page"),
+        title: const Text("Profile setup"),
       ),
       body: Padding(
         padding: const EdgeInsets.all(PAGE_PADDING),
@@ -63,7 +62,7 @@ class RegisterView extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          "R E G I S T E R ",
+                          "S E T U P - P R O F I L E",
                           style: TextStyle(
                             fontSize: 25,
                             fontWeight: FontWeight.bold,
@@ -85,7 +84,7 @@ class RegisterView extends StatelessWidget {
                             color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.2),
                             borderRadius: BorderRadius.circular(3),
                           ),
-                          child: Text("Step 1 of 2",style: TextStyle(
+                          child: Text("Step 2 of 2",style: TextStyle(
                             color: Theme.of(context).colorScheme.primary,
                             fontWeight: FontWeight.bold,
                           ),),
@@ -94,29 +93,28 @@ class RegisterView extends StatelessWidget {
                     ), const SizedBox(height: 10),
                     TextFormField(
                       onChanged: (_) => errorMessage.value = "",
-                      controller: nameController,
+                      controller: bloodGroupController,
                       decoration: const InputDecoration(
-                        labelText: "Full name",
-                        prefixIcon: Icon(Icons.person),
+                        labelText: "Blood Group",
+                        prefixIcon: Icon(Icons.water_drop_sharp),
                       ),
                     ),
                     const SizedBox(height: 20),
                     TextFormField(
                       onChanged: (_) => errorMessage.value = "",
-                      controller: emailController,
+                      controller: contactNumber,
                       decoration: const InputDecoration(
-                        labelText: "Email",
-                        prefixIcon: Icon(Icons.alternate_email),
+                        labelText: "Emergency Number",
+                        prefixIcon: Icon(Icons.phone),
                       ),
                     ),
                     const SizedBox(height: 20),
                     TextFormField(
                       onChanged: (_) => errorMessage.value = "",
-                      controller: passwordController,
-                      obscureText: true,
+                      controller: locationController,
                       decoration: const InputDecoration(
-                        labelText: "Password",
-                        prefixIcon: Icon(Icons.password),
+                        labelText: "Location",
+                        prefixIcon: Icon(Icons.pin_drop_rounded),
                       ),
                     ),
                     const SizedBox(height: 20),
@@ -153,42 +151,11 @@ class RegisterView extends StatelessWidget {
                             ? const CircularProgressIndicator()
                             : PrimaryButton(
                                 onPressed: handleRegister,
-                                text: "R E G I S T E R",
+                                text: "S A V E",
                               )),
                       ],
                     ),
-                    const SizedBox(height: 50),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Container(height: 2, width: 100, color: Colors.grey),
-                        const SizedBox(width: 10),
-                        const Text("OR"),
-                        const SizedBox(width: 10),
-                        Container(height: 2, width: 100, color: Colors.grey),
-                      ],
-                    ),
-                    const SizedBox(height: 10),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          "I already have an account!",
-                          style: Theme.of(context).textTheme.bodyLarge,
-                        ),
-                        const SizedBox(width: 10),
-                        InkWell(
-                          onTap: () => Get.back(),
-                          child: Text(
-                            "Login now",
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodyLarge
-                                ?.copyWith(color: Theme.of(context).colorScheme.primary),
-                          ),
-                        ),
-                      ],
-                    ),
+              
                   ],
                 ),
               ),

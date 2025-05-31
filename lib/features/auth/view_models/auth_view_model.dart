@@ -26,11 +26,7 @@ class AuthViewModel extends GetxController {
   }
 
   /// REGISTER
-  Future<String?> register(
-     String email,
-     String password,
-     String name,
-  ) async {
+  Future<String?> register(String email, String password, String name) async {
     try {
       await _auth.createUserWithEmailAndPassword(
         email: email,
@@ -76,8 +72,7 @@ class AuthViewModel extends GetxController {
   Future<String?> updateUserData({
     String? phone,
     String? bloodGroup,
-    List<EmergencyContact>? emergencyContacts,
-    HealthInfo? healthInfo,
+    String? address,
   }) async {
     try {
       final uid = _auth.currentUser?.uid;
@@ -86,9 +81,7 @@ class AuthViewModel extends GetxController {
       final updateData = {
         if (phone != null) 'phone': phone,
         if (bloodGroup != null) 'bloodGroup': bloodGroup,
-        if (emergencyContacts != null)
-          'emergencyContacts': emergencyContacts.map((e) => e).toList(),
-        if (healthInfo != null) 'healthInfo': healthInfo.toJson(),
+        if (address != null) 'address': address,
         'updatedAt': Timestamp.now(),
       };
 
