@@ -1,3 +1,4 @@
+import 'package:emergency_one/core/routes/app_pages.dart';
 import 'package:emergency_one/core/themes/themes.dart';
 import 'package:emergency_one/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -20,10 +21,11 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       title: 'Emergency One',
       theme: lightTheme,
+      getPages: pageRoutes,
       themeMode: ThemeMode.light,
       darkTheme: lightTheme,
       debugShowCheckedModeBanner: false,
-      home: SplaceView(), // Replace with your desired initial view
+      home: SplaceView(),
     );
   }
 }
