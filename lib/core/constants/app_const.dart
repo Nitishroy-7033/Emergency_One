@@ -1,0 +1,1 @@
+ const double  PAGE_PADDING = 15.0;

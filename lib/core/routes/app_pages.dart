@@ -1,4 +1,5 @@
-import 'package:emergency_one/features/auth/view/auth_view.dart.dart';
+import 'package:emergency_one/features/auth/view/login_view.dart';
+import 'package:emergency_one/features/auth/view/register_view.dart';
 import 'package:get/get.dart';
 
 import '../../features/splace/view/splace_view.dart';
@@ -11,8 +12,12 @@ var pageRoutes = [
   ),
   
   GetPage(
-      name: authView,
-      page: () => AuthView(),
+      name: loginView,
+      page: () => LoginView(),
+  ),
+  GetPage(
+      name: registerView,
+      page: () => RegisterView(),
   ),
 
 ];

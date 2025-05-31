@@ -14,6 +14,6 @@ class SplaceController extends GetxController {
 
   Future<void> handleSplashLogic() async {
     await Future.delayed(Duration(seconds: 3));
-    Get.offNamed(authView);
+    Get.offNamed(loginView);
   }
 }
