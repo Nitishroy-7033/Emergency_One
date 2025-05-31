@@ -34,7 +34,7 @@ class LoginView extends StatelessWidget {
           snackPosition: SnackPosition.BOTTOM,
         );
       } else {
-        // Get.offAllNamed(homeView);
+        Get.offAllNamed(homeView);
         Get.snackbar(
           "Login Success",
           "You have successfully logged in",
