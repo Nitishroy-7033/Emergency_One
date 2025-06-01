@@ -2,11 +2,13 @@ import 'package:emergency_one/core/components/circle_button.dart';
 import 'package:emergency_one/core/constants/app_const.dart';
 import 'package:emergency_one/core/constants/assets_path.dart';
 import 'package:emergency_one/core/routes/app_routes.dart';
+import 'package:emergency_one/demo.dart';
 import 'package:emergency_one/features/home/model/category_card.dart';
 import 'package:emergency_one/features/home/model/sos_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:google_maps_widget/google_maps_widget.dart';
 
 class HomeView extends StatelessWidget {
   const HomeView({super.key});
@@ -35,7 +37,9 @@ class HomeView extends StatelessWidget {
           ),
           child: Icon(Icons.person),
         ),
-        actions: [CircleButton(icon: Icons.notifications), SizedBox(width: 10)],
+        actions: [CircleButton(icon: Icons.notifications,
+        
+        ), SizedBox(width: 10)],
       ),
       body: Padding(
         padding: const EdgeInsets.all(PAGE_PADDING),
@@ -132,6 +136,12 @@ class HomeView extends StatelessWidget {
                 CategoryCard(
                   iconPath: IconAssets.hospital,
                   title: "Hospital",
+                  onTap: (){
+                    Get.to(DemoPage(
+                      destinationLatLng: LatLng(12.984281, 77.596950),
+                      sourceLatLng: LatLng(12.993878, 77.605726),
+                    ));
+                  },
                 ),
                 CategoryCard(
                   iconPath: IconAssets.blood,

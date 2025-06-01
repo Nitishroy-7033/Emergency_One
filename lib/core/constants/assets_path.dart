@@ -13,3 +13,10 @@ class IconAssets {
   static const String kidney = '$basePath/kidney.svg';
   static const String polic = '$basePath/polic.svg';
 }
+
+class ImageAssets {
+  static const String basePath = 'assets/images';
+  static const String car = '$basePath/car.png';
+  static const String des = '$basePath/des.png';
+  static const String my = '$basePath/my.png';
+}
