@@ -45,6 +45,7 @@ dependencies:
   google_maps_widget: ^1.0.6
   geolocator: ^14.0.1
   geocoding: ^4.0.0
+  uuid: ^4.5.1
 dev_dependencies:
   flutter_test:
     sdk: flutter

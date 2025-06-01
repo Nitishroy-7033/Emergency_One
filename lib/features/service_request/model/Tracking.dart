@@ -1,8 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:geolocator/geolocator.dart';
 
 class Tracking {
   bool isLive;
-  GeoPoint currentLocation;
+  Position currentLocation;
   List<RouteEntry> routeHistory;
   DateTime? startedAt;
   DateTime? endedAt;
@@ -44,7 +45,7 @@ class Tracking {
 
 class RouteEntry {
   DateTime timestamp;
-  GeoPoint coordinates;
+  Position coordinates;
 
   RouteEntry({required this.timestamp, required this.coordinates});
 

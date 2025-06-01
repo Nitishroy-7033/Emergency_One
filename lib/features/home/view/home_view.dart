@@ -5,6 +5,8 @@ import 'package:emergency_one/core/routes/app_routes.dart';
 import 'package:emergency_one/demo.dart';
 import 'package:emergency_one/features/home/model/category_card.dart';
 import 'package:emergency_one/features/home/model/sos_button.dart';
+import 'package:emergency_one/features/service_request/controller/service_request.dart'
+    show ServiceRequestController;
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
@@ -16,6 +18,7 @@ class HomeView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     RxBool emergencyEnabled = false.obs;
+    final serviceRequestController = Get.put(ServiceRequestController());
     return Scaffold(
       appBar: AppBar(
         centerTitle: false,
@@ -37,9 +40,15 @@ class HomeView extends StatelessWidget {
           ),
           child: Icon(Icons.person),
         ),
-        actions: [CircleButton(icon: Icons.notifications,
-        
-        ), SizedBox(width: 10)],
+        actions: [
+          CircleButton(
+            icon: Icons.notifications,
+            onPressed: () {
+              serviceRequestController.getMyServiceRequests();
+            },
+          ),
+          SizedBox(width: 10),
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(PAGE_PADDING),
@@ -101,7 +110,7 @@ class HomeView extends StatelessWidget {
             ),
             SizedBox(height: 10),
             Row(
-              mainAxisAlignment: MainAxisAlignment.center ,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Obx(
                   () =>
@@ -129,72 +138,136 @@ class HomeView extends StatelessWidget {
                 CategoryCard(
                   iconPath: IconAssets.ambulance,
                   title: "Ambulance",
-                  onTap: (){
+                  onTap: () {
                     Get.toNamed(ambulanceView);
                   },
                 ),
                 CategoryCard(
                   iconPath: IconAssets.hospital,
                   title: "Hospital",
-                  onTap: (){
-                    Get.to(DemoPage(
-                      destinationLatLng: LatLng(12.984281, 77.596950),
-                      sourceLatLng: LatLng(12.993878, 77.605726),
-                    ));
+                  onTap: () {
+                    Get.to(
+                      DemoPage(
+                        destinationLatLng: LatLng(12.984281, 77.596950),
+                        sourceLatLng: LatLng(12.993878, 77.605726),
+                      ),
+                    );
                   },
                 ),
-                CategoryCard(
-                  iconPath: IconAssets.blood,
-                  title: "Blood",
-                ),
-                CategoryCard(
-                  iconPath: IconAssets.fire,
-                  title: "Desater",
+                CategoryCard(iconPath: IconAssets.blood, title: "Blood"),
+                CategoryCard(iconPath: IconAssets.fire, title: "Desater"),
+              ],
+            ),
+            SizedBox(height: 30),
+            Row(
+              children: [
+                Text(
+                  "My Service Requests",
+                  style: Theme.of(context).textTheme.labelLarge,
                 ),
               ],
             ),
-             SizedBox(height: 30),
-           Container(
+            SizedBox(height: 10),
+            SizedBox(
               height: 400,
-              decoration: BoxDecoration(
-                color: Theme.of(
-                  context,
-                ).colorScheme.primary.withValues(alpha: 0.2),
-                borderRadius: BorderRadius.circular(20),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Expanded(
-                    child: Column(
-                      children: [
-                        Container(
-                          padding: EdgeInsets.symmetric(
-                            vertical: 5,
-                            horizontal: 10,
-                          ),
-                          decoration: BoxDecoration(
-                            color:
-                                Theme.of(context).colorScheme.primaryContainer,
-                            borderRadius: BorderRadius.only(
-                              bottomLeft: Radius.circular(10),
-                              bottomRight: Radius.circular(10),
-                            ),
-                          ),
-                          child: Text(
-                            "MAP VIEW",
-                            style: TextStyle(
-                              fontSize: 20,
-                              // fontWeight: FontWeight.bold,
-                              color: Theme.of(context).colorScheme.primary,
-                            ),
-                          ),
+              child: Obx(
+                () => ListView.builder(
+                  itemCount:
+                      serviceRequestController.myServiceRequests.value.length,
+                  itemBuilder: (context, index) {
+                    return ListTile(
+                      tileColor: Theme.of(context).colorScheme.primaryContainer,
+                      onTap: () {},
+                      leading: Container(
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).colorScheme.primary,
+                          shape: BoxShape.circle,
                         ),
-                       
-                      ],
-                    ),
-                  ),
-                ],
+                        child: SvgPicture.asset(
+                          serviceRequestController
+                                      .myServiceRequests
+                                      .value[index]
+                                      .serviceType ==
+                                  "Police"
+                              ? IconAssets.polic
+                              : serviceRequestController
+                                      .myServiceRequests
+                                      .value[index]
+                                      .serviceType ==
+                                  "Ambulance"
+                              ? IconAssets.ambulance
+                              : serviceRequestController
+                                      .myServiceRequests
+                                      .value[index]
+                                      .serviceType ==
+                                  "Fire"
+                              ? IconAssets.fire
+                              : IconAssets.hospital,
+                          width: 30,
+                          height: 30,
+                        ),
+                      ),
+                      title: Text(
+                        serviceRequestController
+                                .myServiceRequests
+                                .value[index]
+                                .serviceType ??
+                            "No Service Type",
+                      ),
+                      subtitle: Text(
+                        serviceRequestController
+                                .myServiceRequests
+                                .value[index]
+                                .status ??
+                            "No Status",
+                      ),
+                      trailing:
+                          serviceRequestController
+                                      .myServiceRequests
+                                      .value[index]
+                                      .status ==
+                                  "Pending"
+                              ? Icon(
+                                Icons.punch_clock_rounded,
+                                color: Colors.amber,
+                              )
+                              : serviceRequestController
+                                      .myServiceRequests
+                                      .value[index]
+                                      .status ==
+                                  "Accepted"
+                              ? Icon(
+                                Icons.check_circle_outline,
+                                color: Colors.green,
+                              )
+                              : serviceRequestController
+                                      .myServiceRequests
+                                      .value[index]
+                                      .status ==
+                                  "Coming"
+                              ? Icon(Icons.run_circle, color: Colors.blue)
+                              : serviceRequestController
+                                      .myServiceRequests
+                                      .value[index]
+                                      .status ==
+                                  "Reached"
+                              ? Icon(Icons.location_on, color: Colors.green)
+                              : serviceRequestController
+                                      .myServiceRequests
+                                      .value[index]
+                                      .status ==
+                                  "Completed"
+                              ? Icon(Icons.check_circle, color: Colors.green)
+                              : serviceRequestController
+                                      .myServiceRequests
+                                      .value[index]
+                                      .status ==
+                                  "Cancled"
+                              ? Icon(Icons.cancel, color: Colors.red)
+                              : Icon(Icons.help, color: Colors.blue),
+                    );
+                  },
+                ),
               ),
             ),
           ],
