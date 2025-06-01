@@ -1,6 +1,7 @@
 import 'package:emergency_one/core/components/circle_button.dart';
 import 'package:emergency_one/core/constants/app_const.dart';
 import 'package:emergency_one/core/constants/assets_path.dart';
+import 'package:emergency_one/core/routes/app_routes.dart';
 import 'package:emergency_one/features/home/model/category_card.dart';
 import 'package:emergency_one/features/home/model/sos_button.dart';
 import 'package:flutter/material.dart';
@@ -38,7 +39,7 @@ class HomeView extends StatelessWidget {
       ),
       body: Padding(
         padding: const EdgeInsets.all(PAGE_PADDING),
-        child: Column(
+        child: ListView(
           children: [
             Container(
               // height: 300,
@@ -78,6 +79,7 @@ class HomeView extends StatelessWidget {
                         ),
                         SosButton(
                           onPressed: () {
+                            Get.toNamed(serviceRequestView);
                             emergencyEnabled.value = true;
                           },
                         ),
@@ -94,16 +96,21 @@ class HomeView extends StatelessWidget {
               ),
             ),
             SizedBox(height: 10),
-            Obx(
-              () =>
-                  emergencyEnabled.value
-                      ? ElevatedButton(
-                        onPressed: () {
-                          emergencyEnabled.value = false;
-                        },
-                        child: Text("Cancel SOS"),
-                      )
-                      : SizedBox.shrink(),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center ,
+              children: [
+                Obx(
+                  () =>
+                      emergencyEnabled.value
+                          ? ElevatedButton(
+                            onPressed: () {
+                              emergencyEnabled.value = false;
+                            },
+                            child: Text("Cancel SOS"),
+                          )
+                          : SizedBox.shrink(),
+                ),
+              ],
             ),
             SizedBox(height: 10),
             Row(
@@ -118,6 +125,9 @@ class HomeView extends StatelessWidget {
                 CategoryCard(
                   iconPath: IconAssets.ambulance,
                   title: "Ambulance",
+                  onTap: (){
+                    Get.toNamed(ambulanceView);
+                  },
                 ),
                 CategoryCard(
                   iconPath: IconAssets.hospital,
@@ -132,6 +142,50 @@ class HomeView extends StatelessWidget {
                   title: "Desater",
                 ),
               ],
+            ),
+             SizedBox(height: 30),
+           Container(
+              height: 400,
+              decoration: BoxDecoration(
+                color: Theme.of(
+                  context,
+                ).colorScheme.primary.withValues(alpha: 0.2),
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Expanded(
+                    child: Column(
+                      children: [
+                        Container(
+                          padding: EdgeInsets.symmetric(
+                            vertical: 5,
+                            horizontal: 10,
+                          ),
+                          decoration: BoxDecoration(
+                            color:
+                                Theme.of(context).colorScheme.primaryContainer,
+                            borderRadius: BorderRadius.only(
+                              bottomLeft: Radius.circular(10),
+                              bottomRight: Radius.circular(10),
+                            ),
+                          ),
+                          child: Text(
+                            "MAP VIEW",
+                            style: TextStyle(
+                              fontSize: 20,
+                              // fontWeight: FontWeight.bold,
+                              color: Theme.of(context).colorScheme.primary,
+                            ),
+                          ),
+                        ),
+                       
+                      ],
+                    ),
+                  ),
+                ],
+              ),
             ),
           ],
         ),
