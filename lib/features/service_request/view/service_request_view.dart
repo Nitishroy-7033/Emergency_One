@@ -1,6 +1,6 @@
+import 'package:easy_stepper/easy_stepper.dart';
 import 'package:emergency_one/core/components/primary_button.dart';
 import 'package:flutter/material.dart';
-
 import '../../../core/constants/app_const.dart';
 
 class ServiceRequestView extends StatelessWidget {
@@ -8,6 +8,7 @@ class ServiceRequestView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    int activeStep = 2;
     return Scaffold(
       bottomNavigationBar: Container(
         margin: EdgeInsets.only(bottom: 20),
@@ -22,7 +23,7 @@ class ServiceRequestView extends StatelessWidget {
       body: Padding(
         padding: const EdgeInsets.all(PAGE_PADDING),
         
-        child: Column(
+        child: ListView(
           children: [
             Container(
               height: 700,
@@ -31,16 +32,99 @@ class ServiceRequestView extends StatelessWidget {
                 borderRadius: BorderRadius.circular(10),
               ),
               child: Row(children: [
-                  
+                  Expanded(
+                    child: Column(children: [
+
+
+                    ],),
+                  )
                 ]
               ),
             ),
             SizedBox(height: 20,),  
-            Row(
-              children: [
-                Text("What you want ?", style: Theme.of(context).textTheme.labelLarge),
-              ],
-            ),
+            EasyStepper(
+                  activeStep: activeStep,
+                  stepShape: StepShape.rRectangle,
+                  stepBorderRadius: 15,
+                  borderThickness: 2,
+                  padding: EdgeInsets.all(10) ,
+                  stepRadius: 28,
+                  finishedStepBorderColor: Colors.deepOrange,
+                  finishedStepTextColor: Colors.deepOrange,
+                  finishedStepBackgroundColor: Colors.deepOrange,
+                  activeStepIconColor: Colors.deepOrange,
+                  showLoadingAnimation: false,
+                  steps: [
+                    EasyStep(
+                      customStep: ClipRRect(
+                        borderRadius: BorderRadius.circular(15),
+                        child: Opacity(
+                          opacity: activeStep >= 0 ? 1 : 0.3,
+                          child: Icon(Icons.directions_walk),
+                        ),
+                      ),
+                      customTitle: const Text(
+                        'Pending',
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                    EasyStep(
+                      customStep: ClipRRect(
+                        borderRadius: BorderRadius.circular(15),
+                        child: Opacity(
+                          opacity: activeStep >= 1 ? 1 : 0.3,
+                          child: Icon(Icons.directions_bike),
+                        ),
+                      ),
+                      customTitle: const Text(
+                        'Acepted',
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                    EasyStep(
+                      customStep: ClipRRect(
+                        borderRadius: BorderRadius.circular(15),
+                        child: Opacity(
+                          opacity: activeStep >= 2 ? 1 : 0.3,
+                          child: Icon(Icons.directions_car),
+                        ),
+                      ),
+                      customTitle: const Text(
+                        'Coming',
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                    EasyStep(
+                      customStep: ClipRRect(
+                        borderRadius: BorderRadius.circular(15),
+                        child: Opacity(
+                          opacity: activeStep >= 3 ? 1 : 0.3,
+                          child: Icon(Icons.directions_transit),
+                        ),
+                      ),
+                      customTitle: const Text(
+                        'Reached',
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                    EasyStep(
+                      customStep: ClipRRect(
+                        borderRadius: BorderRadius.circular(15),
+                        child: Opacity(
+                          opacity: activeStep >= 4 ? 1 : 0.3,
+                          child: Icon(Icons.directions_bus),
+                        ),
+                      ),
+                      customTitle: const Text(
+                        'Completed',
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  ],
+                  onStepReached: (index) =>{
+
+                  },
+                ),
           ],
         ),
       ),
