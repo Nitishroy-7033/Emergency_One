@@ -69,13 +69,13 @@ class ServiceRequestController extends GetxController {
     }
   }
 
-  Future<void> createServiceRequest() async {
+  Future<void> createServiceRequest(String serviceType) async {
     var docId = Uuid().v4();
     try {
       var newservice = EmergencyRequest(
         id: docId,
         userId: auth.currentUser?.uid,
-        serviceType: "Police",
+        serviceType:serviceType,
         status: "Pending",
         requestDetails: RequestDetails(
           message: "Service Request",
@@ -86,6 +86,7 @@ class ServiceRequestController extends GetxController {
         updatedAt: DateTime.now(),
       );
       await db.collection("ServiceRequest").doc(docId).set(newservice.toMap());
+      await getMyServiceRequests(); 
       Get.snackbar(
         "Success",
         "Service Request Created Successfully",
