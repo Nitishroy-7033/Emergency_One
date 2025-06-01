@@ -3,6 +3,7 @@ import 'package:emergency_one/core/constants/app_const.dart';
 import 'package:emergency_one/core/constants/assets_path.dart';
 import 'package:emergency_one/core/routes/app_routes.dart';
 import 'package:emergency_one/demo.dart';
+import 'package:emergency_one/features/auth/controller/auth_controller.dart';
 import 'package:emergency_one/features/home/model/category_card.dart';
 import 'package:emergency_one/features/home/model/sos_button.dart';
 import 'package:emergency_one/features/service_request/controller/service_request.dart'
@@ -20,45 +21,52 @@ class HomeView extends StatelessWidget {
   Widget build(BuildContext context) {
     RxBool emergencyEnabled = false.obs;
     final serviceRequestController = Get.put(ServiceRequestController());
+    final authController = Get.put(AuthController());
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: false,
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        title: Text(
-          "Nitish Kumar",
-          style: TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
-            color: Theme.of(context).colorScheme.onSurface,
-          ),
-        ),
-        leading: Container(
-          margin: EdgeInsets.all(3),
-          decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.onSurface,
-            borderRadius: BorderRadius.circular(20),
-          ),
-          child: Icon(Icons.person),
-        ),
-        actions: [
-          CircleButton(
-            icon: Icons.notifications,
-            onPressed: () {
-              serviceRequestController.getMyServiceRequests();
-            },
-          ),
-          SizedBox(width: 10),
-        ],
-      ),
       body: RefreshIndicator(
-        onRefresh: () async{
-         await serviceRequestController.getMyServiceRequests();
+        onRefresh: () async {
+          await serviceRequestController.getMyServiceRequests();
         },
         child: Padding(
           padding: const EdgeInsets.all(PAGE_PADDING),
           child: ListView(
             children: [
+              Container(
+                padding: EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.primary,
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween ,
+                  children: [
+                    CircleButton(
+                      icon: Icons.menu,
+                      onPressed: () {
+                        // serviceRequestController.getMyServiceRequests();
+                      },
+                    ),
+                    Obx(
+                      () => Text(
+                        authController.userDetails.value?.name ??
+                            "Nitish Kumar",
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          color: Theme.of(context).colorScheme.surface,
+                        ),
+                      ),
+                    ),
+                    CircleButton(
+                      icon: Icons.person,
+                      onPressed: () {
+                        // serviceRequestController.getMyServiceRequests();
+                      },
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(height: 20), 
               Container(
                 // height: 300,
                 decoration: BoxDecoration(
@@ -80,7 +88,9 @@ class HomeView extends StatelessWidget {
                             ),
                             decoration: BoxDecoration(
                               color:
-                                  Theme.of(context).colorScheme.primaryContainer,
+                                  Theme.of(
+                                    context,
+                                  ).colorScheme.primaryContainer,
                               borderRadius: BorderRadius.only(
                                 bottomLeft: Radius.circular(10),
                                 bottomRight: Radius.circular(10),
@@ -97,7 +107,7 @@ class HomeView extends StatelessWidget {
                           ),
                           SosButton(
                             onPressed: () {
-                              Get.to(ServiceRequestView(serviceType: "Police",));
+                              Get.to(ServiceRequestView(serviceType: "Police"));
                               emergencyEnabled.value = true;
                             },
                           ),
@@ -144,22 +154,30 @@ class HomeView extends StatelessWidget {
                     iconPath: IconAssets.ambulance,
                     title: "Ambulance",
                     onTap: () {
-                     Get.to(ServiceRequestView(serviceType: "Ambulance",));
+                      Get.to(ServiceRequestView(serviceType: "Ambulance"));
                     },
                   ),
                   CategoryCard(
                     iconPath: IconAssets.hospital,
                     title: "Hospital",
                     onTap: () {
-                    Get.to(ServiceRequestView(serviceType: "Hospital",));
+                      Get.to(ServiceRequestView(serviceType: "Hospital"));
                     },
                   ),
-                  CategoryCard(iconPath: IconAssets.blood, title: "Blood",onTap: (){
-                    Get.to(ServiceRequestView(serviceType: "Blood",));
-                  },),
-                  CategoryCard(iconPath: IconAssets.fire, title: "Desater",onTap: (){
-                    Get.to(ServiceRequestView(serviceType: "Fire",));
-                  },),
+                  CategoryCard(
+                    iconPath: IconAssets.blood,
+                    title: "Blood",
+                    onTap: () {
+                      Get.to(ServiceRequestView(serviceType: "Blood"));
+                    },
+                  ),
+                  CategoryCard(
+                    iconPath: IconAssets.fire,
+                    title: "Desater",
+                    onTap: () {
+                      Get.to(ServiceRequestView(serviceType: "Fire"));
+                    },
+                  ),
                 ],
               ),
               SizedBox(height: 30),
@@ -180,11 +198,19 @@ class HomeView extends StatelessWidget {
                         serviceRequestController.myServiceRequests.value.length,
                     itemBuilder: (context, index) {
                       return Container(
-                        margin: EdgeInsets.only(bottom: 10) ,
+                        margin: EdgeInsets.only(bottom: 10),
                         child: ListTile(
-                          tileColor: Theme.of(context).colorScheme.primaryContainer,
+                          tileColor:
+                              Theme.of(context).colorScheme.primaryContainer,
                           onTap: () {
-                            Get.to(ServiceRequestView(serviceData: serviceRequestController.myServiceRequests.value[index],));
+                            Get.to(
+                              ServiceRequestView(
+                                serviceData:
+                                    serviceRequestController
+                                        .myServiceRequests
+                                        .value[index],
+                              ),
+                            );
                           },
                           leading: Container(
                             decoration: BoxDecoration(
@@ -265,7 +291,10 @@ class HomeView extends StatelessWidget {
                                           .value[index]
                                           .status ==
                                       "Completed"
-                                  ? Icon(Icons.check_circle, color: Colors.green)
+                                  ? Icon(
+                                    Icons.check_circle,
+                                    color: Colors.green,
+                                  )
                                   : serviceRequestController
                                           .myServiceRequests
                                           .value[index]
@@ -279,6 +308,20 @@ class HomeView extends StatelessWidget {
                   ),
                 ),
               ),
+              
+            
+            SizedBox(height: 10),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text("Made with ❤️ by @FlutterHero", 
+                  style:TextStyle(
+                    fontSize: 12,
+                    color: Colors.grey
+                  ),
+                ),
+              ],
+            ),
             ],
           ),
         ),
