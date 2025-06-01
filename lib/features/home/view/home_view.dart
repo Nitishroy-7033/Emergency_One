@@ -9,6 +9,7 @@ import 'package:emergency_one/features/home/model/sos_button.dart';
 import 'package:emergency_one/features/service_request/controller/service_request.dart'
     show ServiceRequestController;
 import 'package:emergency_one/features/service_request/view/service_request_view.dart';
+import 'package:emergency_one/features/user/user_profile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
@@ -61,6 +62,7 @@ class HomeView extends StatelessWidget {
                       icon: Icons.person,
                       onPressed: () {
                         // serviceRequestController.getMyServiceRequests();
+                        Get.to(UserProfile());
                       },
                     ),
                   ],
