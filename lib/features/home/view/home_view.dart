@@ -4,6 +4,7 @@ import 'package:emergency_one/core/constants/assets_path.dart';
 import 'package:emergency_one/core/routes/app_routes.dart';
 import 'package:emergency_one/demo.dart';
 import 'package:emergency_one/features/auth/controller/auth_controller.dart';
+import 'package:emergency_one/features/auth/view_models/auth_view_model.dart';
 import 'package:emergency_one/features/home/model/category_card.dart';
 import 'package:emergency_one/features/home/model/sos_button.dart';
 import 'package:emergency_one/features/service_request/controller/service_request.dart'
@@ -22,6 +23,7 @@ class HomeView extends StatelessWidget {
   Widget build(BuildContext context) {
     RxBool emergencyEnabled = false.obs;
     final serviceRequestController = Get.put(ServiceRequestController());
+    final authViewModel = Get.put(AuthViewModel());
     final authController = Get.put(AuthController());
     return Scaffold(
       body: RefreshIndicator(

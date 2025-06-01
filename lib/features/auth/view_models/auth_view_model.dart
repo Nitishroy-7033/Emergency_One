@@ -12,6 +12,12 @@ class AuthViewModel extends GetxController {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
   final AuthController _authController = Get.put(AuthController());
 
+  @override
+  void onInit() {
+    super.onInit();
+    fetchUserData();
+  }
+
   /// LOGIN
   Future<String?> login(String email, String password) async {
     try {
